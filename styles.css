@@ -325,35 +325,40 @@ body[dir="rtl"] {
   pointer-events: none;
 }
 
-/* Heart Spacer to preserve layout structure */
-.heart-spacer {
+/* Ensure sections scroll on top of the fixed background heart and orbits */
+.carousel-section, .counter-section, .timeline-section, .poem-section, .final-section {
+  position: relative;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.hero-title, .hero-subtitle {
+  position: relative;
+  z-index: 15;
+}
+
+/* Heart Container - in normal flow, NOT fixed, so it scrolls up with the hero */
+.heart-container {
+  position: relative;
   width: clamp(150px, 30vw, 240px);
   height: clamp(150px, 30vw, 240px);
+  display: flex; align-items: center; justify-content: center;
   margin-bottom: 30px;
   pointer-events: none;
 }
 
-/* Heart Container - fixed in center background */
-.heart-container {
+/* Fixed Heart Container - fixed in background, does NOT scroll */
+.fixed-heart-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(150px, 30vw, 240px);
-  height: clamp(150px, 30vw, 240px);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  z-index: 2; /* below scrollable content (z-index 5) but above space background */
-  pointer-events: none;
-}
-
-.main-heart-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 10;
-  pointer-events: auto;
+  pointer-events: auto; /* Clickable */
+  display: none;
+}
+.fixed-heart-container.visible {
+  display: block;
 }
 
 .main-heart {
@@ -364,6 +369,7 @@ body[dir="rtl"] {
   user-select: none;
   cursor: pointer;
   pointer-events: auto;
+  display: inline-block;
 }
 .main-heart:active { transform: scale(0.9); }
 
@@ -374,15 +380,36 @@ body[dir="rtl"] {
   45% { transform: scale(1.1); }
 }
 
-/* Orbit System (JS Animated) */
+/* Glow Ring around fixed heart */
+.glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(170px, 34vw, 260px);
+  height: clamp(170px, 34vw, 260px);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 45, 138, 0.2);
+  box-shadow: 0 0 30px rgba(255, 45, 138, 0.2), inset 0 0 30px rgba(255, 45, 138, 0.2);
+  animation: ringPulse 4s linear infinite;
+  pointer-events: none;
+  z-index: 9;
+}
+@keyframes ringPulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.2; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.2; }
+}
+
+/* Orbit System - positioned absolute, centered without transform to avoid creating a stacking context */
 .orbit-system {
   position: absolute;
   top: 50%;
   left: 50%;
   width: clamp(300px, 90vw, 800px);
   height: clamp(300px, 90vw, 800px);
-  transform: translate(-50%, -50%);
-  z-index: 5;
+  margin-top: calc(-0.5 * clamp(300px, 90vw, 800px));
+  margin-left: calc(-0.5 * clamp(300px, 90vw, 800px));
   pointer-events: none;
 }
 

@@ -551,8 +551,8 @@ function initOrbit() {
   // Glow ring around heart
   const ring = document.createElement("div");
   ring.className = "glow-ring";
-  const heartContainer = $(".heart-container");
-  if (heartContainer) heartContainer.appendChild(ring);
+  const fixedHeart = $("#fixed-heart-container");
+  if (fixedHeart) fixedHeart.appendChild(ring);
 }
 
 // ─── CAROUSEL ───
@@ -826,9 +826,10 @@ function initLightbox() {
 
 // ─── HEART CLICK ───
 function initHeartClick() {
-  $(".heart-container").addEventListener("click", (e) => {
-    // If the click happened on orbit items, stopPropagation was called, so this won't trigger.
-    const rect = $(".heart-container").getBoundingClientRect();
+  const container = $(".fixed-heart-container");
+  if (!container) return;
+  container.addEventListener("click", (e) => {
+    const rect = container.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
 
@@ -1076,6 +1077,9 @@ function spawnBirthdaySparkles() {
 
 // ─── START EXPERIENCE ───
 function startExperience() {
+  const fixedHeart = $("#fixed-heart-container");
+  if (fixedHeart) fixedHeart.classList.add("visible");
+
   initStars();
   initSpiralGalaxy();
   initParticles();
