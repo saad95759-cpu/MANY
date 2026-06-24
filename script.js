@@ -97,6 +97,15 @@ function initOverlay() {
   const authInput = $("#auth-date-input");
   const authSubmit = $("#auth-submit-btn");
   const authError = $("#auth-error-msg");
+
+  // Initialize input value to today's date dynamically so the correct answer isn't prefilled
+  if (authInput) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    authInput.value = `${yyyy}-${mm}-${dd}`;
+  }
   
   const questionContainer = $("#love-question-container");
   const yesBtn = $("#love-yes");
