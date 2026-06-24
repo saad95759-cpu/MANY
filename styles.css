@@ -182,6 +182,8 @@ body[dir="rtl"] {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   margin-bottom: 30px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 .main-heart {
