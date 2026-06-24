@@ -92,7 +92,53 @@ function initOverlay() {
     starsContainer.appendChild(star);
   }
 
-  $(".gift-btn").addEventListener("click", () => {
+  // Love Question Logic
+  const yesBtn = $("#love-yes");
+  const noBtn = $("#love-no");
+  const feedback = $("#love-feedback-msg");
+  const questionContainer = $("#love-question-container");
+  const giftBtn = $("#gift-btn");
+
+  let noClickCount = 0;
+
+  noBtn.addEventListener("click", () => {
+    noClickCount++;
+    if (noClickCount === 1) {
+      feedback.textContent = "عيب اختاري اه احسلك 🤨";
+    } else if (noClickCount === 2) {
+      feedback.textContent = "طيزك انتي وهناء حمرة 🤫😂";
+    } else if (noClickCount >= 3) {
+      feedback.textContent = "مفيش منو هو اه 😂❤️";
+      // Change NO button to YES button style and text
+      noBtn.textContent = "اه ❤️";
+      noBtn.id = "love-yes-fake";
+      noBtn.style.background = "linear-gradient(135deg, var(--neon-pink), #ff6b9d)";
+      noBtn.style.boxShadow = "0 0 15px rgba(255, 45, 138, 0.4)";
+      
+      // Bind fake YES button click to same YES behavior
+      noBtn.addEventListener("click", handleYes);
+    }
+  });
+
+  function handleYes() {
+    feedback.textContent = "وانا بحب امك 😂❤️";
+    
+    // Disable buttons
+    yesBtn.style.pointerEvents = "none";
+    if ($("#love-yes-fake")) $("#love-yes-fake").style.pointerEvents = "none";
+    noBtn.style.pointerEvents = "none";
+
+    // Wait 1.5 seconds, then show the gift button
+    setTimeout(() => {
+      questionContainer.style.display = "none";
+      giftBtn.classList.remove("hidden");
+      giftBtn.style.display = "inline-block";
+    }, 1800);
+  }
+
+  yesBtn.addEventListener("click", handleYes);
+
+  giftBtn.addEventListener("click", () => {
     overlay.classList.add("hidden");
     $(".main-content").classList.add("visible");
     startExperience();
