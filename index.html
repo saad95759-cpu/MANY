@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Ammanyyyyyy ❤️</title>
+  <meta name="description" content="A cinematic galaxy birthday experience for Ammanyyyyyy ❤️">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══ OVERLAY ═══ -->
+  <div id="overlay">
+    <div class="stars-bg"></div>
+    <div class="overlay-content">
+      <button class="gift-btn" id="gift-btn">Tap To Open Your Gift 🤍</button>
+    </div>
+  </div>
+
+  <!-- ═══ LANGUAGE SWITCH ═══ -->
+  <button class="lang-switch" id="lang-switch">AR</button>
+
+  <!-- ═══ MUSIC PLAYER ═══ -->
+  <div class="music-player" id="music-player">
+    <button class="music-btn" id="music-btn" aria-label="Toggle Music">🎵</button>
+    <div class="music-track" id="music-track">
+      <div class="music-progress" id="music-progress"></div>
+    </div>
+    <span class="music-time" id="music-time">0:00 / 0:00</span>
+  </div>
+  <audio id="bg-music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ═══ GALAXY BACKGROUND ═══ -->
+  <div class="galaxy-bg">
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+  </div>
+  <canvas id="particles-canvas"></canvas>
+  <div class="floating-hearts"></div>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="fireworks-container" id="fireworks-container"></div>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="main-content" id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="heart-container" id="heart-container">
+        <div class="orbit-system"></div>
+        <span class="main-heart">❤️</span>
+      </div>
+      <h1 class="hero-title">Happy Birthday Ammanyyyyyy ❤️</h1>
+      <p class="hero-subtitle">My Universe, My Everything</p>
+    </section>
+
+    <!-- Carousel -->
+    <section class="carousel-section reveal">
+      <div class="carousel-wrapper">
+        <div class="carousel-track"></div>
+        <button class="carousel-btn carousel-prev" aria-label="Previous">&#10094;</button>
+        <button class="carousel-btn carousel-next" aria-label="Next">&#10095;</button>
+        <div class="carousel-dots"></div>
+      </div>
+    </section>
+
+    <!-- Days Counter -->
+    <section class="counter-section reveal">
+      <div class="counter-card">
+        <div class="counter-number" id="counter-number">0</div>
+        <div class="counter-label">Days Together ❤️</div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section">
+      <h2 class="section-title reveal" data-i18n="timelineTitle">Our Story ❤️</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" data-i18n="tl1Date">05-04-2025 ❤️</div>
+            <div class="timeline-text" data-i18n="tl1Text">The Day We Met</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" data-i18n="tl2Date">01-07-1999 🎂</div>
+            <div class="timeline-text" data-i18n="tl2Text">The Day An Angel Was Born</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Final Scene -->
+    <section class="final-section">
+      <div class="typewriter-text" id="typewriter-text"></div>
+      <div class="final-heart">❤️</div>
+      <h2 class="final-message">Happy Birthday Ammanyyyyyy ❤️</h2>
+    </section>
+
+    <!-- ═══ POEM SECTION ═══ -->
+    <section class="poem-section reveal">
+      <div class="poem-card">
+        <h3 class="poem-title">إلى أجمل أنسة في الكون 👑</h3>
+        <p class="poem-text">
+          يا من غلاها في قلبي ماله حدود<br>
+          يا أجمل ما رأت عيني في الوجود<br>
+          لو لفيت عمري كله مش هلاقي زيك<br>
+          بحبك يا ست الكل، يا أغلى العهود<br><br>
+          ربنا يديمك نعمة في حياتي<br>
+          يا فرحتي، يا ضحكتي، يا أمنياتي<br>
+          كل سنة وأنتِ طيبة يا نبض قلبي ❤️
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══ LIGHTBOX ═══ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" aria-label="Close">✕</button>
+    <img src="" alt="Full photo">
+  </div>
+
+  <!-- ═══ MODAL ═══ -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-heart">💖</div>
+      <p class="modal-message"></p>
+      <button class="modal-close">Close 🤍</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
