@@ -337,6 +337,8 @@ function initSpiralGalaxy() {
 // ─── ORBIT SYSTEM ───
 function initOrbit() {
   const system = $(".orbit-system");
+  if (!system) return;
+
   const orbitTexts = [
     "بحبك ❤️",
     "انتي كل حياتي",
@@ -351,46 +353,82 @@ function initOrbit() {
     "05-04-2025"
   ];
 
-  const radiusX = 45; // percentage
-  const radiusY = 45; // percentage
+  const orbitItems = [];
+  const totalItems = orbitTexts.length + 4; // texts + 4 photos
+  const step = (Math.PI * 2) / totalItems;
 
+  // Create text elements
   orbitTexts.forEach((text, i) => {
-    const angle = (Math.PI * 2 / orbitTexts.length) * i;
     const el = document.createElement("span");
     el.className = "orbit-item";
-    
-    const left = 50 + radiusX * Math.cos(angle);
-    const top = 50 + radiusY * Math.sin(angle);
-    
-    el.style.left = `${left}%`;
-    el.style.top = `${top}%`;
-    el.style.transform = `translate(-50%, -50%)`;
-    
-    el.innerHTML = `<span class="orbit-inner">${text}</span>`;
+    el.textContent = text;
     system.appendChild(el);
+
+    orbitItems.push({
+      el: el,
+      angleOffset: i * step,
+      radiusX: 42 // Outer orbit for texts
+    });
   });
 
-  // Orbit photos
+  // Create photo elements
   for (let i = 1; i <= 4; i++) {
-    const angle = (Math.PI * 2 / 4) * i + Math.PI / 4;
     const frame = document.createElement("div");
     frame.className = "orbit-photo";
-    
-    const left = 50 + (radiusX - 10) * Math.cos(angle);
-    const top = 50 + (radiusY - 10) * Math.sin(angle);
-    
-    frame.style.left = `${left}%`;
-    frame.style.top = `${top}%`;
-    frame.style.transform = `translate(-50%, -50%)`;
-    
-    frame.innerHTML = `<div class="orbit-photo-inner"><img src="images/${i}.jpg" alt="Memory ${i}" loading="lazy"></div>`;
+    frame.innerHTML = `<img src="images/${i}.jpg" alt="Memory ${i}" loading="lazy">`;
     system.appendChild(frame);
+
+    orbitItems.push({
+      el: frame,
+      angleOffset: (orbitTexts.length + i - 0.5) * step,
+      radiusX: 34 // Inner orbit for photos so they don't overlap texts
+    });
   }
+
+  let rotationAngle = 0;
+  function animate() {
+    rotationAngle -= 0.0035; // orbit speed (negative for counter-clockwise like the galaxy)
+
+    orbitItems.forEach(item => {
+      const angle = item.angleOffset + rotationAngle;
+      const tilt = 0.32; // ellipse flatten factor
+
+      // Calculate relative coordinates in percentage (-50% to +50% from center)
+      const x = Math.cos(angle) * item.radiusX;
+      const y = Math.sin(angle) * item.radiusX * tilt;
+
+      // Z depth (-1 to 1)
+      const z = Math.sin(angle);
+
+      // Position relative to center of parent
+      item.el.style.left = `${50 + x}%`;
+      item.el.style.top = `${50 + y}%`;
+
+      // 3D scaling and opacity based on depth
+      const scale = 0.75 + (z + 1) * 0.125; // range: 0.75 to 1.0
+      const opacity = 0.45 + (z + 1) * 0.275; // range: 0.45 to 1.0
+
+      item.el.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      item.el.style.opacity = opacity;
+
+      // Z-depth layering relative to central heart (which is at z-index 10)
+      if (z > 0.1) {
+        item.el.style.zIndex = 12; // In front of heart
+      } else {
+        item.el.style.zIndex = 4; // Behind heart
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 
   // Glow ring around heart
   const ring = document.createElement("div");
   ring.className = "glow-ring";
-  $(".heart-container").appendChild(ring);
+  const heartContainer = $(".heart-container");
+  if (heartContainer) heartContainer.appendChild(ring);
 }
 
 // ─── CAROUSEL ───
