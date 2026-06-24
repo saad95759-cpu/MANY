@@ -9,7 +9,8 @@ const i18n = {
     giftBtn: "Tap To Open Your Gift 🤍",
     heroTitle: "Happy Birthday Ammanyyyyyy ❤️",
     heroSub: "My Universe, My Everything",
-    daysLabel: "Days Together ❤️",
+    daysPubgLabel: "Days Since PUBG ❤️",
+    daysMetLabel: "Days Since We Met ❤️",
     timelineTitle: "Our Story ❤️",
     tl1Date: "05-04-2025 ❤️",
     tl1Text: "The Day We Met",
@@ -39,7 +40,8 @@ const i18n = {
     giftBtn: "اضغط لفتح هديتك 🤍",
     heroTitle: "كل سنة وانتِ طيبة يا أمانييييي ❤️",
     heroSub: "كوني، كل حاجة",
-    daysLabel: "يوم مع بعض ❤️",
+    daysPubgLabel: "يوم من أول مرة اتكلمنا على ببجي ❤️",
+    daysMetLabel: "يوم من أول مرة اتقابلنا ❤️",
     timelineTitle: "قصتنا ❤️",
     tl1Date: "٢٠٢٥/٠٤/٠٥ ❤️",
     tl1Text: "اليوم اللي اتقابلنا فيه",
@@ -107,7 +109,8 @@ function switchLang() {
   $(".lang-switch").textContent = t.langBtn;
   $(".hero-title").textContent = t.heroTitle;
   $(".hero-subtitle").textContent = t.heroSub;
-  $(".counter-label").textContent = t.daysLabel;
+  $("#label-pubg").textContent = t.daysPubgLabel;
+  $("#label-met").textContent = t.daysMetLabel;
   $('[data-i18n="timelineTitle"]').textContent = t.timelineTitle;
   $('[data-i18n="tl1Date"]').textContent = t.tl1Date;
   $('[data-i18n="tl1Text"]').textContent = t.tl1Text;
@@ -359,13 +362,21 @@ function initCarousel() {
   setInterval(() => goTo((current + 1) % total), 5000);
 }
 
-// ─── DAYS COUNTER ───
+// ─── DAYS COUNTERS ───
 function initCounter() {
+  const startPubg = new Date(2023, 9, 14); // Oct 14, 2023
+  const startMet = new Date(2025, 3, 5); // April 5, 2025
+
   function calc() {
-    const start = new Date(2025, 3, 5); // April 5, 2025
     const now = new Date();
-    const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-    $(".counter-number").textContent = diff;
+    
+    const diffPubg = Math.floor((now - startPubg) / (1000 * 60 * 60 * 24));
+    const pubgEl = $("#counter-pubg");
+    if (pubgEl) pubgEl.textContent = diffPubg;
+
+    const diffMet = Math.floor((now - startMet) / (1000 * 60 * 60 * 24));
+    const metEl = $("#counter-met");
+    if (metEl) metEl.textContent = diffMet;
   }
   calc();
   setInterval(calc, 60000);
