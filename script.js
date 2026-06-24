@@ -94,17 +94,40 @@ function initOverlay() {
 
   // Date Auth Logic
   const authContainer = $("#date-auth-container");
-  const authInput = $("#auth-date-input");
+  const authDayInput = $("#auth-day");
+  const authMonthInput = $("#auth-month");
+  const authYearInput = $("#auth-year");
   const authSubmit = $("#auth-submit-btn");
   const authError = $("#auth-error-msg");
 
-  // Initialize input value to today's date dynamically so the correct answer isn't prefilled
-  if (authInput) {
+  // Initialize input value to today's date dynamically
+  if (authDayInput && authMonthInput && authYearInput) {
     const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    authInput.value = `${yyyy}-${mm}-${dd}`;
+    authDayInput.value = String(today.getDate()).padStart(2, '0');
+    authMonthInput.value = String(today.getMonth() + 1).padStart(2, '0');
+    authYearInput.value = String(today.getFullYear());
+  }
+
+  // Auto-focus progression helper
+  function setupAutoFocus(currentEl, nextEl) {
+    if (currentEl && nextEl) {
+      currentEl.addEventListener("input", () => {
+        // Keep only numbers
+        currentEl.value = currentEl.value.replace(/\D/g, '');
+        if (currentEl.value.length >= currentEl.maxLength) {
+          nextEl.focus();
+        }
+      });
+    }
+  }
+
+  setupAutoFocus(authDayInput, authMonthInput);
+  setupAutoFocus(authMonthInput, authYearInput);
+
+  if (authYearInput) {
+    authYearInput.addEventListener("input", () => {
+      authYearInput.value = authYearInput.value.replace(/\D/g, '');
+    });
   }
   
   const questionContainer = $("#love-question-container");
@@ -114,8 +137,11 @@ function initOverlay() {
   const giftBtn = $("#gift-btn");
 
   authSubmit.addEventListener("click", () => {
-    const selectedDate = authInput.value;
-    if (selectedDate === "1999-07-01") {
+    const day = parseInt(authDayInput.value, 10);
+    const month = parseInt(authMonthInput.value, 10);
+    const year = parseInt(authYearInput.value, 10);
+
+    if (day === 1 && month === 7 && year === 1999) {
       authError.style.color = "#00ffcc";
       authError.textContent = "صح يا عمري! 🎉💖";
       authSubmit.style.pointerEvents = "none";
@@ -186,11 +212,16 @@ function switchLang() {
 
   $(".gift-btn").textContent = t.giftBtn;
   $(".lang-switch").textContent = t.langBtn;
-  $(".hero-title").textContent = t.heroTitle;
+  
+  // Set HTML to preserve red heart emoji styling from linear gradient mask
+  $(".hero-title").innerHTML = t.heroTitle.replace(" ❤️", " <span class=\"red-heart\">❤️</span>");
+  
   $(".hero-subtitle").textContent = t.heroSub;
   $("#label-pubg").textContent = t.daysPubgLabel;
   $("#label-met").textContent = t.daysMetLabel;
-  $('[data-i18n="timelineTitle"]').textContent = t.timelineTitle;
+  
+  $('[data-i18n="timelineTitle"]').innerHTML = t.timelineTitle.replace(" ❤️", " <span class=\"red-heart\">❤️</span>");
+  
   $('[data-i18n="tl1Date"]').textContent = t.tl1Date;
   $('[data-i18n="tl1Text"]').textContent = t.tl1Text;
   $('[data-i18n="tl2Date"]').textContent = t.tl2Date;
@@ -441,6 +472,13 @@ function initOrbit() {
     const el = document.createElement("span");
     el.className = "orbit-item";
     el.textContent = text;
+    
+    // Add click event for texts
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openLoveModal();
+    });
+    
     system.appendChild(el);
 
     orbitItems.push({
@@ -455,6 +493,13 @@ function initOrbit() {
     const frame = document.createElement("div");
     frame.className = "orbit-photo";
     frame.innerHTML = `<img src="images/${i}.jpg" alt="Memory ${i}" loading="lazy">`;
+    
+    // Add click event for photos
+    frame.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openLoveModal();
+    });
+    
     system.appendChild(frame);
 
     orbitItems.push({
@@ -782,6 +827,7 @@ function initLightbox() {
 // ─── HEART CLICK ───
 function initHeartClick() {
   $(".heart-container").addEventListener("click", (e) => {
+    // If the click happened on orbit items, stopPropagation was called, so this won't trigger.
     const rect = $(".heart-container").getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -818,27 +864,73 @@ function initHeartClick() {
     setTimeout(() => document.body.classList.remove("shaking"), 300);
 
     // Open modal
-    setTimeout(() => openModal(), 400);
+    setTimeout(() => openLoveModal(), 400);
   });
 }
 
 // ─── MODAL ───
-function openModal() {
+let loveMessageQueue = [];
+
+function openLoveModal() {
   const modal = $(".modal-overlay");
   const msgs = i18n[currentLang].loveMessages;
-  $(".modal-message").textContent =
-    msgs[Math.floor(Math.random() * msgs.length)];
+
+  // Initialize or replenish queue if empty
+  if (loveMessageQueue.length === 0) {
+    loveMessageQueue = [...msgs];
+    loveMessageQueue.sort(() => Math.random() - 0.5);
+  }
+
+  const currentMsg = loveMessageQueue.pop();
+  $(".modal-message").textContent = currentMsg;
+
+  const nextBtn = $("#modal-next-btn");
+  if (loveMessageQueue.length === 0) {
+    nextBtn.textContent = currentLang === "ar" ? "خلصنا كل الكلام الحلو ❤️" : "That's all the love ❤️";
+    nextBtn.style.pointerEvents = "none";
+    nextBtn.style.opacity = "0.5";
+  } else {
+    nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
+    nextBtn.style.pointerEvents = "auto";
+    nextBtn.style.opacity = "1";
+  }
+
   $(".modal-close").textContent = i18n[currentLang].modalClose;
   modal.classList.add("active");
 }
 
 function initModal() {
-  $(".modal-overlay").addEventListener("click", (e) => {
+  const modal = $(".modal-overlay");
+  const nextBtn = $("#modal-next-btn");
+
+  nextBtn.addEventListener("click", () => {
+    const msgs = i18n[currentLang].loveMessages;
+
+    if (loveMessageQueue.length === 0) {
+      loveMessageQueue = [...msgs];
+      loveMessageQueue.sort(() => Math.random() - 0.5);
+    }
+
+    const currentMsg = loveMessageQueue.pop();
+    $(".modal-message").textContent = currentMsg;
+
+    if (loveMessageQueue.length === 0) {
+      nextBtn.textContent = currentLang === "ar" ? "خلصنا كل الكلام الحلو ❤️" : "That's all the love ❤️";
+      nextBtn.style.pointerEvents = "none";
+      nextBtn.style.opacity = "0.5";
+    } else {
+      nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
+      nextBtn.style.pointerEvents = "auto";
+      nextBtn.style.opacity = "1";
+    }
+  });
+
+  modal.addEventListener("click", (e) => {
     if (
       e.target.classList.contains("modal-overlay") ||
       e.target.classList.contains("modal-close")
     ) {
-      $(".modal-overlay").classList.remove("active");
+      modal.classList.remove("active");
     }
   });
 }

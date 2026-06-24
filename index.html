@@ -16,8 +16,21 @@
       <!-- Date Authentication Modal -->
       <div id="date-auth-container">
         <h2 class="love-question-title">تفتكري إيه أحلى تاريخ في حياتي؟ 🤔</h2>
-        <div class="date-input-wrapper">
-          <input type="date" id="auth-date-input">
+        <div class="date-input-wrapper manual-date-inputs">
+          <div class="date-input-field">
+            <label for="auth-day">اليوم</label>
+            <input type="text" id="auth-day" placeholder="DD" maxlength="2" pattern="\d*">
+          </div>
+          <span class="date-separator">/</span>
+          <div class="date-input-field">
+            <label for="auth-month">الشهر</label>
+            <input type="text" id="auth-month" placeholder="MM" maxlength="2" pattern="\d*">
+          </div>
+          <span class="date-separator">/</span>
+          <div class="date-input-field">
+            <label for="auth-year">السنة</label>
+            <input type="text" id="auth-year" placeholder="YYYY" maxlength="4" pattern="\d*">
+          </div>
         </div>
         <button class="love-choice-btn" id="auth-submit-btn">تأكيد 🤍</button>
         <p class="love-feedback-msg" id="auth-error-msg"></p>
@@ -68,11 +81,15 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
+      <div class="heart-spacer"></div>
       <div class="heart-container" id="heart-container">
-        <div class="orbit-system"></div>
-        <span class="main-heart">❤️</span>
+        <div class="orbit-system">
+          <div class="main-heart-wrapper">
+            <span class="main-heart">❤️</span>
+          </div>
+        </div>
       </div>
-      <h1 class="hero-title">Happy Birthday Ammanyyyyyy ❤️</h1>
+      <h1 class="hero-title">Happy Birthday Ammanyyyyyy <span class="red-heart">❤️</span></h1>
       <p class="hero-subtitle">My Universe, My Everything</p>
     </section>
 
@@ -159,6 +176,7 @@
     <div class="modal-card">
       <div class="modal-heart">💖</div>
       <p class="modal-message"></p>
+      <button class="modal-next-btn" id="modal-next-btn">بيقول إيه؟ 🤫</button>
       <button class="modal-close">Close 🤍</button>
     </div>
   </div>
