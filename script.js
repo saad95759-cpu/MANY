@@ -92,13 +92,43 @@ function initOverlay() {
     starsContainer.appendChild(star);
   }
 
-  // Love Question Logic
+  // Date Auth Logic
+  const authContainer = $("#date-auth-container");
+  const authInput = $("#auth-date-input");
+  const authSubmit = $("#auth-submit-btn");
+  const authError = $("#auth-error-msg");
+  
+  const questionContainer = $("#love-question-container");
   const yesBtn = $("#love-yes");
   const noBtn = $("#love-no");
   const feedback = $("#love-feedback-msg");
-  const questionContainer = $("#love-question-container");
   const giftBtn = $("#gift-btn");
 
+  authSubmit.addEventListener("click", () => {
+    const selectedDate = authInput.value;
+    if (selectedDate === "1999-07-01") {
+      authError.style.color = "#00ffcc";
+      authError.textContent = "صح يا عمري! 🎉💖";
+      authSubmit.style.pointerEvents = "none";
+      
+      setTimeout(() => {
+        authContainer.style.display = "none";
+        questionContainer.style.display = "block";
+      }, 1500);
+    } else {
+      authError.style.color = "var(--neon-pink)";
+      const failMessages = [
+        "تاريخ غلط يا عيوني 😜",
+        "حاولي تفتكري كويس ركزي! 🤔",
+        "فكرك دا تاريخ ميلاد مين؟ 😂",
+        "تاريخ ميلاد أغلى إنسانة! 😉🎂"
+      ];
+      const randomMsg = failMessages[Math.floor(Math.random() * failMessages.length)];
+      authError.textContent = randomMsg;
+    }
+  });
+
+  // Love Question Logic
   let noClickCount = 0;
 
   noBtn.addEventListener("click", () => {
@@ -109,26 +139,20 @@ function initOverlay() {
       feedback.textContent = "طيزك انتي وهناء حمرة 🤫😂";
     } else if (noClickCount >= 3) {
       feedback.textContent = "مفيش منو هو اه 😂❤️";
-      // Change NO button to YES button style and text
       noBtn.textContent = "اه ❤️";
       noBtn.id = "love-yes-fake";
       noBtn.style.background = "linear-gradient(135deg, var(--neon-pink), #ff6b9d)";
       noBtn.style.boxShadow = "0 0 15px rgba(255, 45, 138, 0.4)";
-      
-      // Bind fake YES button click to same YES behavior
       noBtn.addEventListener("click", handleYes);
     }
   });
 
   function handleYes() {
     feedback.textContent = "وانا بحب امك 😂❤️";
-    
-    // Disable buttons
     yesBtn.style.pointerEvents = "none";
     if ($("#love-yes-fake")) $("#love-yes-fake").style.pointerEvents = "none";
     noBtn.style.pointerEvents = "none";
 
-    // Wait 1.5 seconds, then show the gift button
     setTimeout(() => {
       questionContainer.style.display = "none";
       giftBtn.classList.remove("hidden");

@@ -13,8 +13,18 @@
   <div id="overlay">
     <div class="stars-bg"></div>
     <div class="overlay-content">
-      <!-- Love Question Modal -->
-      <div id="love-question-container">
+      <!-- Date Authentication Modal -->
+      <div id="date-auth-container">
+        <h2 class="love-question-title">تفتكري إيه أحلى تاريخ في حياتي؟ 🤔</h2>
+        <div class="date-input-wrapper">
+          <input type="date" id="auth-date-input" value="1999-07-01">
+        </div>
+        <button class="love-choice-btn" id="auth-submit-btn">تأكيد 🤍</button>
+        <p class="love-feedback-msg" id="auth-error-msg"></p>
+      </div>
+
+      <!-- Love Question Modal (Hidden initially) -->
+      <div id="love-question-container" style="display: none;">
         <h2 class="love-question-title">بتحبيني؟ 🥹</h2>
         <div class="love-buttons">
           <button class="love-choice-btn" id="love-yes">اه ❤️</button>
