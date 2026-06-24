@@ -353,12 +353,16 @@ body[dir="rtl"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: clamp(200px, 40vw, 300px);
+  height: clamp(200px, 40vw, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 10;
-  pointer-events: auto; /* Clickable */
-  display: none;
+  pointer-events: none; /* Let clicks pass to orbit items if not clicking the heart itself */
 }
 .fixed-heart-container.visible {
-  display: block;
+  display: flex;
 }
 
 .main-heart {
@@ -369,9 +373,15 @@ body[dir="rtl"] {
   user-select: none;
   cursor: pointer;
   pointer-events: auto;
+  z-index: 10;
   display: inline-block;
 }
 .main-heart:active { transform: scale(0.9); }
+
+/* Stop heartbeat on scroll to prevent CPU/GPU rendering lag */
+.fixed-heart-container.scrolled .main-heart {
+  animation: none !important;
+}
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); filter: drop-shadow(0 0 40px var(--neon-pink)) drop-shadow(0 0 80px rgba(255,45,138,0.8)); }
@@ -380,25 +390,32 @@ body[dir="rtl"] {
   45% { transform: scale(1.1); }
 }
 
-/* Glow Ring around fixed heart */
+/* Glow Ring around fixed heart - perfectly aligned by sharing the square container's coordinate context */
 .glow-ring {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(170px, 34vw, 260px);
-  height: clamp(170px, 34vw, 260px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  border: 2px solid rgba(255, 45, 138, 0.2);
-  box-shadow: 0 0 30px rgba(255, 45, 138, 0.2), inset 0 0 30px rgba(255, 45, 138, 0.2);
+  border: 2px solid rgba(255, 45, 138, 0.25);
+  box-shadow: 0 0 30px rgba(255, 45, 138, 0.25), inset 0 0 30px rgba(255, 45, 138, 0.25);
   animation: ringPulse 4s linear infinite;
   pointer-events: none;
   z-index: 9;
+  box-sizing: border-box;
 }
+
+/* Stop ring pulse on scroll to optimize performance */
+.fixed-heart-container.scrolled .glow-ring {
+  animation: none !important;
+  opacity: 0.4;
+}
+
 @keyframes ringPulse {
-  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
-  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.2; }
+  0% { transform: scale(0.85); opacity: 0.2; }
+  50% { transform: scale(0.98); opacity: 0.6; }
+  100% { transform: scale(0.85); opacity: 0.2; }
 }
 
 /* Orbit System - positioned absolute, centered without transform to avoid creating a stacking context */

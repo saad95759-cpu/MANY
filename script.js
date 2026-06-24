@@ -1075,6 +1075,20 @@ function spawnBirthdaySparkles() {
   }
 }
 
+// ─── SCROLL PERFORMANCE OPTIMIZATION ───
+function initScrollPerformance() {
+  const fixedHeart = $("#fixed-heart-container");
+  if (!fixedHeart) return;
+  
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 30) {
+      fixedHeart.classList.add("scrolled");
+    } else {
+      fixedHeart.classList.remove("scrolled");
+    }
+  }, { passive: true });
+}
+
 // ─── START EXPERIENCE ───
 function startExperience() {
   const fixedHeart = $("#fixed-heart-container");
@@ -1099,6 +1113,7 @@ function startExperience() {
   initConfetti();
   initFireworks();
   initBalloons();
+  initScrollPerformance();
 }
 
 // ─── ANTI-INSPECT & COPY ───
