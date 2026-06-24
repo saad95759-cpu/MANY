@@ -240,61 +240,131 @@ function initShootingStars() {
   setInterval(spawnShootingStar, 4000 + Math.random() * 4000);
 }
 
-// ─── FLOATING HEARTS ───
-function initFloatingHearts() {
-  const container = $(".floating-hearts");
-  const hearts = ["❤️", "💕", "🌹", "💗", "✨", "🤍"];
+// ─── SPIRAL GALAXY (3D CANVAS) ───
+function initSpiralGalaxy() {
+  const canvas = $("#spiral-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  let width, height;
+  let time = 0;
 
-  function spawn() {
-    const el = document.createElement("span");
-    el.className = "float-heart";
-    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-    el.style.left = Math.random() * 100 + "%";
-    el.style.animationDuration = 8 + Math.random() * 8 + "s";
-    el.style.fontSize = 0.8 + Math.random() * 0.8 + "rem";
-    container.appendChild(el);
-    setTimeout(() => el.remove(), 16000);
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const particles = [];
+  const arms = 5;
+  const numParticles = 1500;
+  
+  for (let i = 0; i < numParticles; i++) {
+    const armIndex = i % arms;
+    const angleOffset = (Math.PI * 2 / arms) * armIndex;
+    const distance = Math.random() * (width * 0.5);
+    
+    const baseAngle = distance * 0.005 + angleOffset;
+    const scatterAngle = baseAngle + (Math.random() - 0.5) * 0.5;
+    const scatterDist = distance + (Math.random() - 0.5) * 50;
+
+    particles.push({
+      dist: scatterDist,
+      angle: scatterAngle,
+      size: Math.random() * 2 + 0.5,
+      speed: 0.0002 + Math.random() * 0.0005,
+      color: `rgba(255, 45, 138, ${Math.random() * 0.8 + 0.2})`,
+    });
   }
 
-  setInterval(spawn, 2500);
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+    
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const tilt = 0.4;
+
+    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 150);
+    gradient.addColorStop(0, "rgba(0,0,0,1)");
+    gradient.addColorStop(0.2, "rgba(0,0,0,0.8)");
+    gradient.addColorStop(0.5, "rgba(255,45,138,0.3)");
+    gradient.addColorStop(1, "transparent");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(centerX - 150, centerY - 150, 300, 300);
+
+    particles.forEach(p => {
+      const currentAngle = p.angle - time * p.speed * 200;
+      const x = Math.cos(currentAngle) * p.dist;
+      const y = Math.sin(currentAngle) * p.dist * tilt;
+      
+      const z = Math.sin(currentAngle) * p.dist; 
+      const scale = (800 + z) / 800;
+      
+      ctx.beginPath();
+      ctx.arc(centerX + x, centerY + y, Math.max(0.1, p.size * scale), 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+
+    time += 0.01;
+    requestAnimationFrame(render);
+  }
+  
+  render();
 }
 
 // ─── ORBIT SYSTEM ───
 function initOrbit() {
   const system = $(".orbit-system");
   const orbitTexts = [
+    "بحبك ❤️",
+    "انتي كل حياتي",
+    "انتي نور عيني",
     "Ammanyyyyyy ❤️",
+    "ربنا يديمك ليا نعمه",
+    "يمزة 🎀",
+    "يوتكة 🧸",
+    "يبو توتة جمدة 🔥",
     "Happy Birthday",
-    "My Universe",
-    "Forever",
-    "Te Amo",
-    "My Everything",
-    "05-04-2025",
-    "01-07-1999",
+    "كل سنة وانتِ طيبة",
+    "05-04-2025"
   ];
 
-  // Dynamic radius based on container size
-  const systemSize = system.getBoundingClientRect().width || 400;
-  const textRadius = systemSize * 0.42;
-  const photoRadius = systemSize * 0.36;
+  const radiusX = 45; // percentage
+  const radiusY = 45; // percentage
 
   orbitTexts.forEach((text, i) => {
-    const angle = (360 / orbitTexts.length) * i;
+    const angle = (Math.PI * 2 / orbitTexts.length) * i;
     const el = document.createElement("span");
     el.className = "orbit-item";
-    el.textContent = text;
-    el.style.transform = `translate(-50%,-50%) rotateY(${angle}deg) translateZ(${textRadius}px)`;
-    el.style.animationDelay = `${i * 0.5}s`;
+    
+    const left = 50 + radiusX * Math.cos(angle);
+    const top = 50 + radiusY * Math.sin(angle);
+    
+    el.style.left = `${left}%`;
+    el.style.top = `${top}%`;
+    el.style.transform = `translate(-50%, -50%)`;
+    
+    el.innerHTML = `<span class="orbit-inner">${text}</span>`;
     system.appendChild(el);
   });
 
   // Orbit photos
   for (let i = 1; i <= 4; i++) {
-    const angle = 90 * i + 45;
+    const angle = (Math.PI * 2 / 4) * i + Math.PI / 4;
     const frame = document.createElement("div");
     frame.className = "orbit-photo";
-    frame.innerHTML = `<img src="images/${i}.jpg" alt="Memory ${i}" loading="lazy">`;
-    frame.style.transform = `translate(-50%,-50%) rotateY(${angle}deg) translateZ(${photoRadius}px)`;
+    
+    const left = 50 + (radiusX - 10) * Math.cos(angle);
+    const top = 50 + (radiusY - 10) * Math.sin(angle);
+    
+    frame.style.left = `${left}%`;
+    frame.style.top = `${top}%`;
+    frame.style.transform = `translate(-50%, -50%)`;
+    
+    frame.innerHTML = `<div class="orbit-photo-inner"><img src="images/${i}.jpg" alt="Memory ${i}" loading="lazy"></div>`;
     system.appendChild(frame);
   }
 
@@ -779,6 +849,7 @@ function spawnBirthdaySparkles() {
 // ─── START EXPERIENCE ───
 function startExperience() {
   initStars();
+  initSpiralGalaxy();
   initParticles();
   initShootingStars();
   initFloatingHearts();
