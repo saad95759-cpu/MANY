@@ -204,16 +204,18 @@ body[dir="rtl"] {
 /* 3D Orbit System */
 .orbit-system {
   position: absolute;
-  width: clamp(300px, 80vw, 800px);
-  height: clamp(300px, 80vw, 800px);
+  top: 50%;
+  left: 50%;
+  width: clamp(300px, 90vw, 800px);
+  height: clamp(300px, 90vw, 800px);
   transform-style: preserve-3d;
   animation: orbitSpin 40s linear infinite;
   z-index: 5;
 }
 
 @keyframes orbitSpin {
-  0% { transform: rotateX(75deg) rotateZ(0deg); }
-  100% { transform: rotateX(75deg) rotateZ(360deg); }
+  0% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
+  100% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
 }
 
 .orbit-item {

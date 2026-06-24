@@ -240,6 +240,25 @@ function initShootingStars() {
   setInterval(spawnShootingStar, 4000 + Math.random() * 4000);
 }
 
+// ─── FLOATING HEARTS ───
+function initFloatingHearts() {
+  const container = $(".floating-hearts");
+  const hearts = ["❤️", "💕", "🌹", "💗", "✨", "🤍"];
+
+  function spawn() {
+    const el = document.createElement("span");
+    el.className = "float-heart";
+    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    el.style.left = Math.random() * 100 + "%";
+    el.style.animationDuration = 8 + Math.random() * 8 + "s";
+    el.style.fontSize = 0.8 + Math.random() * 0.8 + "rem";
+    if(container) container.appendChild(el);
+    setTimeout(() => el.remove(), 16000);
+  }
+
+  setInterval(spawn, 2500);
+}
+
 // ─── SPIRAL GALAXY (3D CANVAS) ───
 function initSpiralGalaxy() {
   const canvas = $("#spiral-canvas");
