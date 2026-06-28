@@ -12,15 +12,29 @@ const i18n = {
     daysPubgLabel: "Days Since PUBG ❤️",
     daysMetLabel: "Days Since We Met ❤️",
     timelineTitle: "Our Story ❤️",
-    tl1Date: "05-04-2025 ❤️",
-    tl1Text: "The Day We Met",
-    tl2Date: "01-07-1999 🎂",
-    tl2Text: "The Day An Angel Was Born",
+    
+    tlBirthDate: "01-08-2000 🎂",
+    tlBirthText: "The Day An Angel Was Born",
+    tlPubgDate: "14-10-2023 🎮",
+    tlPubgText: "We Met in PUBG",
+    tlMeet1Date: "05-04-2025 ❤️",
+    tlMeet1Text: "First Day We Met",
+    tlMeet2Date: "29-01-2026 🕊️",
+    tlMeet2Text: "Second Time & Sweet Pigeon",
+    tlMeet3Date: "23-03-2026 🌙",
+    tlMeet3Text: "Third Time with the Most Beautiful Outfit & Eid Kahk",
+    tlSeaDate: "27-06-2026 🌊",
+    tlSeaText: "Gharzat El-Bahr Says Hello",
 
     typewriter: ["In every universe,", "I would still choose you 🤍"],
     finalMsg: "Happy Birthday Ammanyyyyyy ❤️",
     modalClose: "Close 🤍",
     langBtn: "AR",
+    timerTitle: "Time Left Until Your Birthday Gift ✨",
+    daysLabel: "Days",
+    hoursLabel: "Hours",
+    minutesLabel: "Minutes",
+    secondsLabel: "Seconds",
     loveMessages: [
       "You are my favorite place ❤️",
       "Every day with you is beautiful.",
@@ -43,15 +57,29 @@ const i18n = {
     daysPubgLabel: "يوم من أول مرة اتكلمنا على ببجي ❤️",
     daysMetLabel: "يوم من أول مرة اتقابلنا ❤️",
     timelineTitle: "قصتنا ❤️",
-    tl1Date: "٢٠٢٥/٠٤/٠٥ ❤️",
-    tl1Text: "اليوم اللي اتقابلنا فيه",
-    tl2Date: "١٩٩٩/٠٧/٠١ 🎂",
-    tl2Text: "اليوم اللي ملاك اتولد فيه",
+    
+    tlBirthDate: "٢٠٠٠/٠٨/٠١ 🎂",
+    tlBirthText: "اليوم اللي ملاك اتولد فيه الأصلي",
+    tlPubgDate: "٢٠٢٣/١٠/١٤ 🎮",
+    tlPubgText: "اتعرفنا في ببجي",
+    tlMeet1Date: "٢٠٢٥/٠٤/٠٥ ❤️",
+    tlMeet1Text: "أول يوم اتقابلنا فيه",
+    tlMeet2Date: "٢٠٢٦/٠١/٢٩ 🕊️",
+    tlMeet2Text: "تاني مرة والحمام المسكر",
+    tlMeet3Date: "٢٠٢٦/٠٣/٢٣ 🌙",
+    tlMeet3Text: "تالت مرة بأجمل طقم وكحك العيد القمر",
+    tlSeaDate: "٢٠٢٦/٠٦/٢٧ 🌊",
+    tlSeaText: "عرزة البحر بتسلم عليكي",
 
     typewriter: ["في كل كون،", "كنت هختارك برضو 🤍"],
     finalMsg: "كل سنة وانتِ طيبة يا أمانييييي ❤️",
     modalClose: "إغلاق 🤍",
     langBtn: "EN",
+    timerTitle: "الوقت المتبقي على يومنا المميز ✨",
+    daysLabel: "أيام",
+    hoursLabel: "ساعات",
+    minutesLabel: "دقائق",
+    secondsLabel: "ثواني",
     loveMessages: [
       "وجودك أجمل حاجة حصلتلي.",
       "أنتِ عالمي كله ❤️",
@@ -141,7 +169,7 @@ function initOverlay() {
     const month = parseInt(authMonthInput.value, 10);
     const year = parseInt(authYearInput.value, 10);
 
-    if (day === 1 && month === 7 && year === 1999) {
+    if (day === 1 && month === 8 && year === 2000) {
       authError.style.color = "#00ffcc";
       authError.textContent = "صح يا عمري! 🎉💖";
       authSubmit.style.pointerEvents = "none";
@@ -152,14 +180,7 @@ function initOverlay() {
       }, 1500);
     } else {
       authError.style.color = "var(--neon-pink)";
-      const failMessages = [
-        "تاريخ غلط يا عيوني 😜",
-        "حاولي تفتكري كويس ركزي! 🤔",
-        "فكرك دا تاريخ ميلاد مين؟ 😂",
-        "تاريخ ميلاد أغلى إنسانة! 😉🎂"
-      ];
-      const randomMsg = failMessages[Math.floor(Math.random() * failMessages.length)];
-      authError.textContent = randomMsg;
+      authError.textContent = currentLang === "ar" ? "احا مش فاتح يكلب" : "Wrong password, not opening! 😜";
     }
   });
 
@@ -190,8 +211,11 @@ function initOverlay() {
 
     setTimeout(() => {
       questionContainer.style.display = "none";
-      giftBtn.classList.remove("hidden");
-      giftBtn.style.display = "inline-block";
+      const giftUnlockContainer = $("#gift-unlock-container");
+      if (giftUnlockContainer) {
+        giftUnlockContainer.style.display = "block";
+      }
+      initBirthdayTimer();
     }, 1800);
   }
 
@@ -222,10 +246,38 @@ function switchLang() {
   
   $('[data-i18n="timelineTitle"]').innerHTML = t.timelineTitle.replace(" ❤️", " <span class=\"red-heart\">❤️</span>");
   
-  $('[data-i18n="tl1Date"]').textContent = t.tl1Date;
-  $('[data-i18n="tl1Text"]').textContent = t.tl1Text;
-  $('[data-i18n="tl2Date"]').textContent = t.tl2Date;
-  $('[data-i18n="tl2Text"]').textContent = t.tl2Text;
+  // Date Auth Title update (if container visible)
+  const dateAuthTitle = $("#date-auth-container .love-question-title");
+  if (dateAuthTitle) {
+    dateAuthTitle.textContent = currentLang === "ar" ? "افتكري تاريخ ميلادي الاصلي 🤔" : "Remember my real birthday 🤔";
+  }
+
+  // Timer label updates
+  const timerTitle = $(".timer-title");
+  if (timerTitle) timerTitle.textContent = t.timerTitle;
+  
+  const daysLbl = $("#cosmic-timer .timer-unit:nth-child(1) .timer-label");
+  if (daysLbl) daysLbl.textContent = t.daysLabel;
+  const hoursLbl = $("#cosmic-timer .timer-unit:nth-child(3) .timer-label");
+  if (hoursLbl) hoursLbl.textContent = t.hoursLabel;
+  const minsLbl = $("#cosmic-timer .timer-unit:nth-child(5) .timer-label");
+  if (minsLbl) minsLbl.textContent = t.minutesLabel;
+  const secsLbl = $("#cosmic-timer .timer-unit:nth-child(7) .timer-label");
+  if (secsLbl) secsLbl.textContent = t.secondsLabel;
+  
+  // Timeline items update
+  $("#tl-date-birth").textContent = t.tlBirthDate;
+  $("#tl-text-birth").textContent = t.tlBirthText;
+  $("#tl-date-pubg").textContent = t.tlPubgDate;
+  $("#tl-text-pubg").textContent = t.tlPubgText;
+  $("#tl-date-meet1").textContent = t.tlMeet1Date;
+  $("#tl-text-meet1").textContent = t.tlMeet1Text;
+  $("#tl-date-meet2").textContent = t.tlMeet2Date;
+  $("#tl-text-meet2").textContent = t.tlMeet2Text;
+  $("#tl-date-meet3").textContent = t.tlMeet3Date;
+  $("#tl-text-meet3").textContent = t.tlMeet3Text;
+  $("#tl-date-sea").textContent = t.tlSeaDate;
+  $("#tl-text-sea").textContent = t.tlSeaText;
 
   $(".final-message").textContent = t.finalMsg;
 }
@@ -299,6 +351,7 @@ function initParticles() {
       ];
       this.life = Math.random() * 200 + 100;
       this.age = 0;
+      this.shape = ["circle", "heart", "star", "sparkle", "moon", "diamond", "ring", "flower", "pigeon"][Math.floor(Math.random() * 9)];
     }
     update() {
       this.x += this.vx;
@@ -308,10 +361,111 @@ function initParticles() {
     }
     draw() {
       const fade = 1 - this.age / this.life;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.save();
+      ctx.translate(this.x, this.y);
       ctx.fillStyle = `rgba(${this.color},${this.opacity * fade})`;
-      ctx.fill();
+
+      if (this.shape === "circle") {
+        ctx.beginPath();
+        ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (this.shape === "heart") {
+        ctx.beginPath();
+        const size = this.r * 1.5;
+        ctx.moveTo(0, -size / 4);
+        ctx.bezierCurveTo(size / 2, -size, size, -size / 3, 0, size);
+        ctx.bezierCurveTo(-size, -size / 3, -size / 2, -size, 0, -size / 4);
+        ctx.fill();
+      } else if (this.shape === "star") {
+        ctx.beginPath();
+        const spikes = 5;
+        const outerRadius = this.r * 1.5;
+        const innerRadius = this.r * 0.7;
+        let rot = Math.PI / 2 * 3;
+        let cx = 0;
+        let cy = 0;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rot) * outerRadius;
+          y = cy + Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+
+          x = cx + Math.cos(rot) * innerRadius;
+          y = cy + Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fill();
+      } else if (this.shape === "sparkle") {
+        ctx.beginPath();
+        const size = this.r * 1.8;
+        ctx.moveTo(0, -size);
+        ctx.quadraticCurveTo(0, 0, size, 0);
+        ctx.quadraticCurveTo(0, 0, 0, size);
+        ctx.quadraticCurveTo(0, 0, -size, 0);
+        ctx.quadraticCurveTo(0, 0, 0, -size);
+        ctx.closePath();
+        ctx.fill();
+      } else if (this.shape === "moon") {
+        ctx.beginPath();
+        const size = this.r * 1.5;
+        ctx.arc(0, 0, size, -Math.PI / 2, Math.PI / 2, false);
+        ctx.quadraticCurveTo(size * 0.4, size, size * 0.4, -size);
+        ctx.closePath();
+        ctx.fill();
+      } else if (this.shape === "diamond") {
+        ctx.beginPath();
+        const size = this.r * 1.5;
+        ctx.moveTo(0, -size);
+        ctx.lineTo(size, 0);
+        ctx.lineTo(0, size);
+        ctx.lineTo(-size, 0);
+        ctx.closePath();
+        ctx.fill();
+      } else if (this.shape === "ring") {
+        ctx.beginPath();
+        const outer = this.r * 1.5;
+        const inner = this.r * 0.8;
+        ctx.arc(0, 0, outer, 0, Math.PI * 2);
+        ctx.arc(0, 0, inner, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.fillStyle = `rgba(255, 215, 0, ${this.opacity * fade})`;
+        ctx.beginPath();
+        ctx.moveTo(0, -outer - 2);
+        ctx.lineTo(3, -outer - 5);
+        ctx.lineTo(0, -outer - 8);
+        ctx.lineTo(-3, -outer - 5);
+        ctx.closePath();
+        ctx.fill();
+      } else if (this.shape === "flower") {
+        ctx.beginPath();
+        const size = this.r * 1.2;
+        for (let i = 0; i < 5; i++) {
+          const angle = (i * 2 * Math.PI) / 5;
+          const px = Math.cos(angle) * size;
+          const py = Math.sin(angle) * size;
+          ctx.arc(px, py, size * 0.6, 0, Math.PI * 2);
+        }
+        ctx.fill();
+      } else if (this.shape === "pigeon") {
+        ctx.beginPath();
+        const size = this.r * 1.5;
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(size * 0.8, -size * 0.8, size * 1.2, -size * 0.2);
+        ctx.quadraticCurveTo(size * 0.4, 0, 0, size * 0.2);
+        ctx.quadraticCurveTo(-size * 0.4, 0, -size * 1.2, -size * 0.2);
+        ctx.quadraticCurveTo(-size * 0.8, -size * 0.8, 0, 0);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
     }
   }
 
@@ -475,6 +629,7 @@ function initOrbit() {
     
     // Add click event for texts
     el.addEventListener("click", (e) => {
+      if (hasDragged) return;
       e.stopPropagation();
       openLoveModal();
     });
@@ -496,6 +651,7 @@ function initOrbit() {
     
     // Add click event for photos
     frame.addEventListener("click", (e) => {
+      if (hasDragged) return;
       e.stopPropagation();
       openLoveModal();
     });
@@ -510,8 +666,86 @@ function initOrbit() {
   }
 
   let rotationAngle = 0;
+  let isDragging = false;
+  let hasDragged = false;
+  let startX = 0;
+  let lastX = 0;
+  let velocity = 0;
+  let lastTime = 0;
+
+  // Let the entire hero section be the drag target area
+  const targetArea = $(".hero") || system;
+  if (targetArea) {
+    targetArea.style.cursor = "grab";
+  }
+
+  function handleStart(e) {
+    if (e.target.closest("button, input, a, .music-player, .lang-switch, .lightbox, .modal-overlay")) {
+      return;
+    }
+    isDragging = true;
+    hasDragged = false;
+    startX = e.clientX || (e.touches && e.touches[0].clientX);
+    lastX = startX;
+    velocity = 0;
+    lastTime = performance.now();
+  }
+
+  function handleMove(e) {
+    if (!isDragging) return;
+    const currentX = e.clientX || (e.touches && e.touches[0].clientX);
+    const deltaX = currentX - lastX;
+    
+    if (Math.abs(currentX - startX) > 8) {
+      hasDragged = true;
+    }
+
+    // Scale dragging to rotation change yameen & shemal
+    rotationAngle += deltaX * 0.005;
+
+    const currentTime = performance.now();
+    const timeDelta = currentTime - lastTime;
+    if (timeDelta > 0) {
+      velocity = (deltaX / timeDelta) * 0.05; // horizontal spin momentum
+    }
+
+    lastX = currentX;
+    lastTime = currentTime;
+  }
+
+  function handleEnd() {
+    isDragging = false;
+  }
+
+  if (targetArea) {
+    targetArea.addEventListener("mousedown", (e) => {
+      targetArea.style.cursor = "grabbing";
+      handleStart(e);
+    });
+  }
+  window.addEventListener("mousemove", handleMove);
+  window.addEventListener("mouseup", () => {
+    if (targetArea) targetArea.style.cursor = "grab";
+    handleEnd();
+  });
+
+  if (targetArea) {
+    targetArea.addEventListener("touchstart", handleStart, { passive: true });
+  }
+  window.addEventListener("touchmove", handleMove, { passive: true });
+  window.addEventListener("touchend", handleEnd);
+
   function animate() {
-    rotationAngle -= 0.0035; // orbit speed (negative for counter-clockwise like the galaxy)
+    if (!isDragging) {
+      // Apply momentum
+      rotationAngle += velocity;
+      velocity *= 0.95; // decay
+      
+      // Gentle constant auto-rotation when no momentum exists
+      if (Math.abs(velocity) < 0.0005) {
+        rotationAngle -= 0.0035;
+      }
+    }
 
     orbitItems.forEach(item => {
       const angle = item.angleOffset + rotationAngle;
@@ -617,30 +851,64 @@ function initCarousel() {
 function initCounter() {
   const startPubg = new Date(2023, 9, 14); // Oct 14, 2023
   const startMet = new Date(2025, 3, 5); // April 5, 2025
+  let isInitial = true;
 
   function calc() {
     const now = new Date();
     
     const diffPubg = Math.floor((now - startPubg) / (1000 * 60 * 60 * 24));
     const pubgEl = $("#counter-pubg");
-    if (pubgEl) pubgEl.textContent = diffPubg;
 
     const diffMet = Math.floor((now - startMet) / (1000 * 60 * 60 * 24));
     const metEl = $("#counter-met");
-    if (metEl) metEl.textContent = diffMet;
+
+    if (isInitial) {
+      if (pubgEl) animateValue(pubgEl, 0, diffPubg, 2000);
+      if (metEl) animateValue(metEl, 0, diffMet, 2000);
+      isInitial = false;
+    } else {
+      if (pubgEl) pubgEl.textContent = diffPubg;
+      if (metEl) metEl.textContent = diffMet;
+    }
   }
   calc();
   setInterval(calc, 60000);
 }
 
 // ─── MUSIC PLAYER ───
+let isMusicInitialized = false;
+
 function initMusic() {
+  if (isMusicInitialized) return;
+  isMusicInitialized = true;
+
   const btn = $("#music-btn");
   const audio = $("#bg-music");
   const track = $("#music-track");
   const progress = $("#music-progress");
   const timeDisplay = $("#music-time");
-  let playing = false;
+
+  function playAudio() {
+    audio.play().then(() => {
+      btn.classList.add("playing");
+      btn.textContent = "🎶";
+      document.removeEventListener("click", playAudio);
+      document.removeEventListener("touchstart", playAudio);
+      document.removeEventListener("keydown", playAudio);
+    }).catch((err) => {
+      console.log("Auto-play blocked, waiting for interaction:", err);
+    });
+  }
+
+  // Attempt play immediately
+  playAudio();
+
+  // Autoplay fallback: play on first click, touch, or keypress anywhere on the page
+  document.addEventListener("click", playAudio);
+  document.addEventListener("touchstart", playAudio);
+  document.addEventListener("keydown", playAudio);
+
+  let playing = !audio.paused;
 
   function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
@@ -660,7 +928,9 @@ function initMusic() {
   }
 
   // Play/Pause
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    playing = !audio.paused;
     if (playing) {
       audio.pause();
       btn.classList.remove("playing");
@@ -670,7 +940,6 @@ function initMusic() {
       btn.classList.add("playing");
       btn.textContent = "🎶";
     }
-    playing = !playing;
   });
 
   // Update progress
@@ -679,11 +948,32 @@ function initMusic() {
 
   // Seek
   track.addEventListener("click", (e) => {
+    e.stopPropagation();
     const rect = track.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const percent = clickX / rect.width;
     if (audio.duration) {
       audio.currentTime = percent * audio.duration;
+    }
+  });
+
+  // Tab switch visibility control (pause when tab hidden, resume when return)
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (!audio.paused) {
+        audio.pause();
+        btn.classList.remove("playing");
+        btn.textContent = "🎵";
+        audio.wasPlayingBeforeHide = true;
+      }
+    } else {
+      if (audio.wasPlayingBeforeHide) {
+        audio.play().then(() => {
+          btn.classList.add("playing");
+          btn.textContent = "🎶";
+        }).catch(() => {});
+        audio.wasPlayingBeforeHide = false;
+      }
     }
   });
 }
@@ -714,9 +1004,12 @@ function initConfetti() {
       this.rotSpeed = (Math.random() - 0.5) * 8;
       this.color = ["#ff2d8a","#ffd700","#c4a7e7","#7b2fbe","#ff6b9d","#ffffff"][Math.floor(Math.random()*6)];
       this.opacity = 1;
+      this.shape = Math.random() < 0.9 ? "heart" : "rect"; // 90% heart confetti!
+      this.swing = Math.random() * 2.5;
+      this.swingSpeed = 0.01 + Math.random() * 0.02;
     }
     update() {
-      this.x += this.vx;
+      this.x += this.vx + Math.sin(this.y * this.swingSpeed) * this.swing;
       this.y += this.vy;
       this.rot += this.rotSpeed;
       this.vy += 0.02;
@@ -729,7 +1022,17 @@ function initConfetti() {
       ctx.rotate((this.rot * Math.PI) / 180);
       ctx.fillStyle = this.color;
       ctx.globalAlpha = this.opacity;
-      ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+      
+      if (this.shape === "rect") {
+        ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+      } else {
+        ctx.beginPath();
+        const size = this.w * 1.2;
+        ctx.moveTo(0, -size / 4);
+        ctx.bezierCurveTo(size / 2, -size, size, -size / 3, 0, size);
+        ctx.bezierCurveTo(-size, -size / 3, -size / 2, -size, 0, -size / 4);
+        ctx.fill();
+      }
       ctx.restore();
     }
   }
@@ -760,17 +1063,33 @@ function initFireworks() {
   function fire() {
     const x = 10 + Math.random() * 80;
     const y = 10 + Math.random() * 40;
-    for (let i = 0; i < 20; i++) {
+    const isHeart = Math.random() < 0.95; // 95% heart fireworks!
+    const numParticles = isHeart ? 35 : 20;
+
+    for (let i = 0; i < numParticles; i++) {
       const dot = document.createElement("div");
       dot.className = "firework-burst";
-      const angle = (Math.PI * 2 * i) / 20;
-      const dist = 40 + Math.random() * 60;
       dot.style.left = x + "%";
       dot.style.top = y + "%";
       dot.style.background = colors[Math.floor(Math.random() * colors.length)];
-      dot.style.setProperty("--fx", `${Math.cos(angle) * dist}px`);
-      dot.style.setProperty("--fy", `${Math.sin(angle) * dist}px`);
-      dot.style.animationDelay = `${Math.random() * 0.15}s`;
+      
+      let dx = 0, dy = 0;
+      if (isHeart) {
+        // Parametric heart formula
+        const t = (Math.PI * 2 * i) / numParticles;
+        const scale = 5 + Math.random() * 3; // randomized scaling factor
+        dx = 16 * Math.pow(Math.sin(t), 3) * scale;
+        dy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * scale;
+      } else {
+        const angle = (Math.PI * 2 * i) / numParticles;
+        const dist = 40 + Math.random() * 60;
+        dx = Math.cos(angle) * dist;
+        dy = Math.sin(angle) * dist;
+      }
+
+      dot.style.setProperty("--fx", `${dx}px`);
+      dot.style.setProperty("--fy", `${dy}px`);
+      dot.style.animationDelay = `${Math.random() * 0.1}s`;
       container.appendChild(dot);
       setTimeout(() => dot.remove(), 800);
     }
@@ -781,8 +1100,8 @@ function initFireworks() {
   setTimeout(fire, 3200);
   setInterval(() => {
     fire();
-    setTimeout(fire, 400 + Math.random() * 600);
-  }, 12000);
+    setTimeout(fire, 300 + Math.random() * 500);
+  }, 4000);
 }
 
 // ─── BALLOONS ───
@@ -871,30 +1190,25 @@ function initHeartClick() {
 
 // ─── MODAL ───
 let loveMessageQueue = [];
+let showingRestartMessage = false;
 
 function openLoveModal() {
   const modal = $(".modal-overlay");
   const msgs = i18n[currentLang].loveMessages;
 
-  // Initialize or replenish queue if empty
   if (loveMessageQueue.length === 0) {
     loveMessageQueue = [...msgs];
     loveMessageQueue.sort(() => Math.random() - 0.5);
   }
-
+  
+  showingRestartMessage = false;
   const currentMsg = loveMessageQueue.pop();
   $(".modal-message").textContent = currentMsg;
 
   const nextBtn = $("#modal-next-btn");
-  if (loveMessageQueue.length === 0) {
-    nextBtn.textContent = currentLang === "ar" ? "خلصنا كل الكلام الحلو ❤️" : "That's all the love ❤️";
-    nextBtn.style.pointerEvents = "none";
-    nextBtn.style.opacity = "0.5";
-  } else {
-    nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
-    nextBtn.style.pointerEvents = "auto";
-    nextBtn.style.opacity = "1";
-  }
+  nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
+  nextBtn.style.pointerEvents = "auto";
+  nextBtn.style.opacity = "1";
 
   $(".modal-close").textContent = i18n[currentLang].modalClose;
   modal.classList.add("active");
@@ -907,22 +1221,24 @@ function initModal() {
   nextBtn.addEventListener("click", () => {
     const msgs = i18n[currentLang].loveMessages;
 
-    if (loveMessageQueue.length === 0) {
+    if (showingRestartMessage) {
       loveMessageQueue = [...msgs];
       loveMessageQueue.sort(() => Math.random() - 0.5);
+      showingRestartMessage = false;
+      const currentMsg = loveMessageQueue.pop();
+      $(".modal-message").textContent = currentMsg;
+      nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
+      return;
     }
 
-    const currentMsg = loveMessageQueue.pop();
-    $(".modal-message").textContent = currentMsg;
-
-    if (loveMessageQueue.length === 0) {
-      nextBtn.textContent = currentLang === "ar" ? "خلصنا كل الكلام الحلو ❤️" : "That's all the love ❤️";
-      nextBtn.style.pointerEvents = "none";
-      nextBtn.style.opacity = "0.5";
+    if (loveMessageQueue.length > 0) {
+      const currentMsg = loveMessageQueue.pop();
+      $(".modal-message").textContent = currentMsg;
     } else {
-      nextBtn.textContent = currentLang === "ar" ? "بيقول إيه؟ 🤫" : "What else? 🤫";
-      nextBtn.style.pointerEvents = "auto";
-      nextBtn.style.opacity = "1";
+      // Last message shown. Now display the loop restart prompt
+      $(".modal-message").textContent = currentLang === "ar" ? "بحبك بس الكلام مش مكفي نعيد تاني ؟" : "I love you, but words are not enough. Repeat? ❤️";
+      nextBtn.textContent = currentLang === "ar" ? "نعيد تاني؟ ❤️" : "Repeat? ❤️";
+      showingRestartMessage = true;
     }
   });
 
@@ -1109,7 +1425,6 @@ function startExperience() {
   initParallax();
   initScrollReveal();
   initTypewriter();
-  initMusic();
   initConfetti();
   initFireworks();
   initBalloons();
@@ -1137,4 +1452,86 @@ document.addEventListener("DOMContentLoaded", () => {
   initOverlay();
   $(".lang-switch").addEventListener("click", switchLang);
   initProtection();
+  initMusic();
 });
+
+// ─── BIRTHDAY COUNTDOWN TIMER ───
+function initBirthdayTimer() {
+  const targetDate = new Date(2026, 6, 1, 0, 0, 0); // July 1st, 2026
+  const timerWrapper = $("#birthday-timer-wrapper");
+  const specialMsg = $("#birthday-special-msg");
+  const giftBtn = $("#gift-btn");
+  let timerInterval;
+
+  function update() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      if (timerWrapper) timerWrapper.style.display = "none";
+      if (specialMsg) specialMsg.style.display = "block";
+      if (giftBtn) {
+        giftBtn.classList.remove("hidden");
+        giftBtn.style.display = "inline-block";
+      }
+      if (timerInterval) clearInterval(timerInterval);
+    } else {
+      if (timerWrapper) timerWrapper.style.display = "block";
+      if (specialMsg) specialMsg.style.display = "none";
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const daysEl = $("#timer-days");
+      const hoursEl = $("#timer-hours");
+      const minutesEl = $("#timer-minutes");
+      const secondsEl = $("#timer-seconds");
+
+      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+  }
+
+  update();
+  if (targetDate - new Date() > 0) {
+    timerInterval = setInterval(update, 1000);
+  }
+
+  // Hidden bypass: tap timer title 5 times to force unlock gift button
+  let clicks = 0;
+  if (timerWrapper) {
+    const title = timerWrapper.querySelector(".timer-title");
+    if (title) {
+      title.addEventListener("click", () => {
+        clicks++;
+        if (clicks >= 5) {
+          if (giftBtn) {
+            giftBtn.classList.remove("hidden");
+            giftBtn.style.display = "inline-block";
+          }
+          title.textContent = currentLang === "ar" ? "تم تخطي المؤقت للتجربة! 😉" : "Bypassed for testing! 😉";
+        }
+      });
+    }
+  }
+}
+
+// ─── UTILITY FOR ROLL UP COUNTERS ───
+function animateValue(obj, start, end, duration) {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    obj.textContent = Math.floor(progress * (end - start) + start);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      obj.textContent = end;
+    }
+  };
+  window.requestAnimationFrame(step);
+}

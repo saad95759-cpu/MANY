@@ -322,7 +322,7 @@ body[dir="rtl"] {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   position: relative; padding: 20px;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 /* Ensure sections scroll on top of the fixed background heart and orbits */
@@ -1124,6 +1124,90 @@ body[dir="rtl"] {
   transform: translateY(0);
 }
 
+/* ═══ COSMIC TIMER ═══ */
+#gift-unlock-container {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 40px 30px;
+  border-radius: 24px;
+  max-width: 450px;
+  margin: 0 auto 30px auto;
+  box-shadow: 0 0 40px rgba(123, 47, 190, 0.15);
+  animation: giftFloat 3s ease-in-out infinite;
+  text-align: center;
+}
+
+.timer-title {
+  font-family: 'Noto Kufi Arabic', 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--soft-white);
+  text-shadow: 0 0 10px var(--neon-pink);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cosmic-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  direction: ltr;
+}
+
+.timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.timer-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: linear-gradient(135deg, var(--gold), var(--rose));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.timer-label {
+  font-family: 'Noto Kufi Arabic', 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  color: var(--lavender);
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+.timer-separator {
+  font-size: 2.2rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  animation: separatorPulse 1s infinite alternate;
+  margin-top: -15px; /* offset for visual alignment with numbers */
+}
+
+@keyframes separatorPulse {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.special-text {
+  font-family: 'Noto Kufi Arabic', 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--soft-white);
+  text-shadow: 0 0 15px var(--neon-pink);
+  margin-bottom: 25px;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 768px) {
   .counter-card { padding: 28px 36px; }
@@ -1137,4 +1221,14 @@ body[dir="rtl"] {
   .music-btn { width: 32px; height: 32px; min-width: 32px; font-size: 1rem; }
   .music-track { width: clamp(60px, 15vw, 100px); }
   .music-time { font-size: 0.6rem; min-width: 60px; }
+  
+  /* Timer responsive */
+  #gift-unlock-container { padding: 25px 15px; }
+  .timer-title { font-size: 1.1rem; }
+  .cosmic-timer { gap: 6px; }
+  .timer-unit { min-width: 52px; }
+  .timer-value { font-size: 1.6rem; }
+  .timer-separator { font-size: 1.6rem; margin-top: -10px; }
+  .timer-label { font-size: 0.7rem; }
+  .special-text { font-size: 1.1rem; }
 }

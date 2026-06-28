@@ -15,7 +15,7 @@
     <div class="overlay-content">
       <!-- Date Authentication Modal -->
       <div id="date-auth-container">
-        <h2 class="love-question-title">تفتكري إيه أحلى تاريخ في حياتي؟ 🤔</h2>
+        <h2 class="love-question-title">افتكري تاريخ ميلادي الاصلي 🤔</h2>
         <div class="date-input-wrapper manual-date-inputs">
           <div class="date-input-field">
             <label for="auth-day">اليوم</label>
@@ -45,7 +45,38 @@
         </div>
         <p class="love-feedback-msg" id="love-feedback-msg"></p>
       </div>
-      <button class="gift-btn hidden" id="gift-btn" style="display: none;">Tap To Open Your Gift 🤍</button>
+
+      <!-- Gift Unlock Container with Countdown (Hidden initially) -->
+      <div id="gift-unlock-container" style="display: none;">
+        <div id="birthday-timer-wrapper">
+          <h3 class="timer-title">الوقت المتبقي على يومنا المميز ✨</h3>
+          <div class="cosmic-timer" id="cosmic-timer">
+            <div class="timer-unit">
+              <span class="timer-value" id="timer-days">00</span>
+              <span class="timer-label">أيام</span>
+            </div>
+            <div class="timer-separator">:</div>
+            <div class="timer-unit">
+              <span class="timer-value" id="timer-hours">00</span>
+              <span class="timer-label">ساعات</span>
+            </div>
+            <div class="timer-separator">:</div>
+            <div class="timer-unit">
+              <span class="timer-value" id="timer-minutes">00</span>
+              <span class="timer-label">دقائق</span>
+            </div>
+            <div class="timer-separator">:</div>
+            <div class="timer-unit">
+              <span class="timer-value" id="timer-seconds">00</span>
+              <span class="timer-label">ثواني</span>
+            </div>
+          </div>
+        </div>
+        <div id="birthday-special-msg" style="display: none;">
+          <p class="special-text">أجمل يوم في العمر يوم بتمنى يتكرر وأنتِ في حضني السنة الجاية ❤️</p>
+        </div>
+        <button class="gift-btn hidden" id="gift-btn" style="display: none;">Tap To Open Your Gift 🤍</button>
+      </div>
     </div>
   </div>
 
@@ -125,14 +156,38 @@
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-card">
-            <div class="timeline-date" data-i18n="tl1Date">05-04-2025 ❤️</div>
-            <div class="timeline-text" data-i18n="tl1Text">The Day We Met</div>
+            <div class="timeline-date" id="tl-date-birth">01-08-2000 🎂</div>
+            <div class="timeline-text" id="tl-text-birth">The Day An Angel Was Born</div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-card">
-            <div class="timeline-date" data-i18n="tl2Date">01-07-1999 🎂</div>
-            <div class="timeline-text" data-i18n="tl2Text">The Day An Angel Was Born</div>
+            <div class="timeline-date" id="tl-date-pubg">14-10-2023 🎮</div>
+            <div class="timeline-text" id="tl-text-pubg">We Met in PUBG</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" id="tl-date-meet1">05-04-2025 ❤️</div>
+            <div class="timeline-text" id="tl-text-meet1">First Day We Met</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" id="tl-date-meet2">29-01-2026 🕊️</div>
+            <div class="timeline-text" id="tl-text-meet2">Second Time & Sweet Pigeon</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" id="tl-date-meet3">23-03-2026 🌙</div>
+            <div class="timeline-text" id="tl-text-meet3">Third Time with the Most Beautiful Outfit & Eid Kahk</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <div class="timeline-date" id="tl-date-sea">27-06-2026 🌊</div>
+            <div class="timeline-text" id="tl-text-sea">Gharzat El-Bahr Says Hello</div>
           </div>
         </div>
       </div>
