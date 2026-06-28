@@ -415,69 +415,15 @@ body[dir="rtl"] {
   animation: heartRotate3d 6s ease-in-out infinite;
 }
 
-.heart-shape {
-  position: absolute;
-  inset: 0;
+.svg-heart-3d {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 15px rgba(255, 45, 138, 0.6)) drop-shadow(0 0 30px rgba(255, 45, 138, 0.3));
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
-
-.heart-shape::before,
-.heart-shape::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 80%;
-  border-radius: 50% 50% 0 0;
-  background: linear-gradient(
-    180deg,
-    #ff6b9d 0%,
-    #ff2d8a 30%,
-    #d4145a 60%,
-    #a00040 100%
-  );
-  box-shadow:
-    inset -6px -6px 18px rgba(0, 0, 0, 0.35),
-    inset 6px 6px 18px rgba(255, 150, 180, 0.4),
-    0 0 40px rgba(255, 45, 138, 0.6),
-    0 0 80px rgba(255, 45, 138, 0.3),
-    0 0 120px rgba(255, 45, 138, 0.15);
-}
-
-.heart-shape::before {
-  left: 50%;
-  transform-origin: 0% 100%;
-  transform: rotate(-45deg);
-}
-
-.heart-shape::after {
-  right: 50%;
-  transform-origin: 100% 100%;
-  transform: rotate(45deg);
-}
-
-/* Glossy highlight on the heart */
-.heart-shine {
-  position: absolute;
-  top: 12%;
-  left: 22%;
-  width: 28%;
-  height: 25%;
-  background: radial-gradient(
-    ellipse at 50% 40%,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.3) 40%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  transform: rotate(-35deg);
-  pointer-events: none;
-  z-index: 2;
-  animation: shineShimmer 3s ease-in-out infinite alternate;
-}
-
-@keyframes shineShimmer {
-  0% { opacity: 0.5; transform: rotate(-35deg) scale(0.95); }
-  100% { opacity: 0.9; transform: rotate(-35deg) scale(1.05); }
+.main-heart:hover .svg-heart-3d {
+  filter: drop-shadow(0 0 25px rgba(255, 45, 138, 0.95)) drop-shadow(0 0 50px rgba(255, 45, 138, 0.5));
+  transform: scale(1.05);
 }
 
 @keyframes heartRotate3d {
@@ -955,8 +901,10 @@ body[dir="rtl"] {
 /* ═══ GLOW RING ═══ */
 .glow-ring {
   position: absolute;
-  width: clamp(180px, 38vw, 300px);
-  height: clamp(180px, 38vw, 300px);
+  top: 50%;
+  left: 50%;
+  width: clamp(160px, 32vw, 240px);
+  height: clamp(160px, 32vw, 240px);
   border-radius: 50%;
   border: 2px solid transparent;
   background: conic-gradient(from 0deg, var(--neon-pink), var(--cosmic-purple), var(--lavender), var(--gold), var(--neon-pink)) border-box;
@@ -964,13 +912,16 @@ body[dir="rtl"] {
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: glowRingSpin 4s linear infinite;
-  opacity: 0.4;
+  animation: glowRingSpin 6s linear infinite;
+  opacity: 0.55;
   filter: blur(1px);
+  z-index: 9;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 @keyframes glowRingSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* ═══ BIRTHDAY TEXT SPARKLE ═══ */
@@ -1375,4 +1326,59 @@ body[dir="rtl"] {
   .timer-separator { font-size: 1.6rem; margin-top: -10px; }
   .timer-label { font-size: 0.7rem; }
   .special-text { font-size: 1.1rem; }
+}
+
+/* ═══ ORBIT POPUP CARD ═══ */
+.orbit-popup-card {
+  position: relative;
+  max-width: 480px !important;
+  width: 90% !important;
+  padding: 35px 25px !important;
+  border: 2px solid var(--neon-pink) !important;
+  box-shadow: 0 0 50px rgba(255, 45, 138, 0.4) !important;
+  animation: popupAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+@keyframes popupAppear {
+  0% { transform: scale(0.8) translateY(30px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.orbit-popup-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+  line-height: 1;
+  z-index: 10;
+  user-select: none;
+}
+
+.orbit-popup-close-btn:hover {
+  color: var(--neon-pink);
+  transform: scale(1.15);
+}
+
+.orbit-popup-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 2.5px solid var(--neon-pink);
+  margin-bottom: 15px;
+  box-shadow: 0 0 25px rgba(255, 45, 138, 0.3), 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.orbit-popup-text {
+  font-size: 1.25rem;
+  font-family: 'Noto Kufi Arabic', 'Outfit', sans-serif;
+  color: var(--soft-white);
+  text-shadow: 0 0 10px rgba(255, 45, 138, 0.6);
+  line-height: 1.6;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: 500;
 }

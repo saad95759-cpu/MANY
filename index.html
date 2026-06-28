@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -103,7 +103,7 @@
   </div>
 
   <!-- ═══ LANGUAGE SWITCH ═══ -->
-  <button class="lang-switch" id="lang-switch">AR</button>
+  <button class="lang-switch" id="lang-switch">EN</button>
 
   <!-- ═══ MUSIC PLAYER ═══ -->
   <div class="music-player" id="music-player">
@@ -136,8 +136,19 @@
     <div class="fixed-heart-container" id="fixed-heart-container">
       <div class="main-heart" id="main-heart-el">
         <div class="heart-3d">
-          <div class="heart-shape"></div>
-          <div class="heart-shine"></div>
+          <svg viewBox="0 0 24 24" width="100%" height="100%" class="svg-heart-3d">
+            <defs>
+              <radialGradient id="heartGrad" cx="35%" cy="30%" r="60%" fx="35%" fy="30%">
+                <stop offset="0%" stop-color="#ff9ebe" />
+                <stop offset="40%" stop-color="#ff2d8a" />
+                <stop offset="85%" stop-color="#b3004b" />
+                <stop offset="100%" stop-color="#6e002c" />
+              </radialGradient>
+            </defs>
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGrad)" />
+            <!-- Glossy reflection overlay -->
+            <path d="M7.5 5c-0.8 0-1.6 0.3-2.2 0.9 -1.2 1.2-1.5 3-1.1 4.3 0.2-1.2 0.8-2.6 1.9-3.7 1-1 2.1-1.4 3-1.4C8.6 5.1 8 5 7.5 5z" fill="#ffffff" opacity="0.65" />
+          </svg>
         </div>
       </div>
     </div>
@@ -183,7 +194,7 @@
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-card">
-            <div class="timeline-date" id="tl-date-birth">01-08-2000 🎂</div>
+            <div class="timeline-date" id="tl-date-birth">01-07-1999 🎂</div>
             <div class="timeline-text" id="tl-text-birth">The Day An Angel Was Born</div>
           </div>
         </div>
@@ -260,6 +271,14 @@
       <p class="modal-message"></p>
       <button class="modal-next-btn" id="modal-next-btn">بيقول إيه؟ 🤫</button>
       <button class="modal-close">Close 🤍</button>
+    </div>
+  </div>
+
+  <!-- ═══ ORBIT POPUP ═══ -->
+  <div class="modal-overlay" id="orbit-popup">
+    <div class="modal-card orbit-popup-card">
+      <div class="orbit-popup-close-btn">✕</div>
+      <div id="orbit-popup-content"></div>
     </div>
   </div>
 

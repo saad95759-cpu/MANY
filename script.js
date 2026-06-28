@@ -13,7 +13,7 @@ const i18n = {
     daysMetLabel: "Days Since We Met ❤️",
     timelineTitle: "Our Story ❤️",
     
-    tlBirthDate: "01-08-2000 🎂",
+    tlBirthDate: "01-07-1999 🎂",
     tlBirthText: "The Day An Angel Was Born",
     tlPubgDate: "14-10-2023 🎮",
     tlPubgText: "We Met in PUBG",
@@ -58,7 +58,7 @@ const i18n = {
     daysMetLabel: "يوم من أول مرة اتقابلنا ❤️",
     timelineTitle: "قصتنا ❤️",
     
-    tlBirthDate: "٢٠٠٠/٠٨/٠١ 🎂",
+    tlBirthDate: "١٩٩٩/٠٧/٠١ 🎂",
     tlBirthText: "اليوم اللي ملاك اتولد فيه الأصلي",
     tlPubgDate: "٢٠٢٣/١٠/١٤ 🎮",
     tlPubgText: "اتعرفنا في ببجي",
@@ -97,7 +97,7 @@ const i18n = {
   },
 };
 
-let currentLang = "en";
+let currentLang = "ar";
 
 // ─── DOM REFS ───
 const $ = (s) => document.querySelector(s);
@@ -291,6 +291,54 @@ function switchLang() {
   $("#tl-text-sea").textContent = t.tlSeaText;
 
   $(".final-message").textContent = t.finalMsg;
+}
+
+// ─── ORBIT POPUP ───
+function showOrbitPopup(content, isImage) {
+  const popup = $("#orbit-popup");
+  const contentArea = $("#orbit-popup-content");
+  if (!popup || !contentArea) return;
+  
+  if (isImage) {
+    contentArea.innerHTML = `
+      <img class="orbit-popup-image" src="${content}" alt="Memory">
+      <p class="orbit-popup-text">${currentLang === "ar" ? "ذكرى جميلة مخلدة في قلبي ❤️" : "A beautiful memory kept in my heart ❤️"}</p>
+    `;
+  } else {
+    contentArea.innerHTML = `
+      <div style="font-size: 3.2rem; margin-bottom: 12px; text-shadow: 0 0 10px rgba(255, 45, 138, 0.5);">✨❤️✨</div>
+      <p class="orbit-popup-text">"${content}"</p>
+    `;
+  }
+  
+  popup.style.display = "flex";
+  setTimeout(() => {
+    popup.classList.add("active");
+  }, 10);
+}
+
+function initOrbitPopup() {
+  const popup = $("#orbit-popup");
+  if (!popup) return;
+  
+  const closeBtn = popup.querySelector(".orbit-popup-close-btn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      popup.classList.remove("active");
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 400);
+    });
+  }
+  
+  popup.addEventListener("click", (e) => {
+    if (e.target === popup || e.target.classList.contains("modal-overlay")) {
+      popup.classList.remove("active");
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 400);
+    }
+  });
 }
 
 // ─── STARS BACKGROUND ───
@@ -642,7 +690,7 @@ function initOrbit() {
     el.addEventListener("click", (e) => {
       if (hasDragged) return;
       e.stopPropagation();
-      openLoveModal();
+      showOrbitPopup(text, false);
     });
     
     system.appendChild(el);
@@ -664,7 +712,7 @@ function initOrbit() {
     frame.addEventListener("click", (e) => {
       if (hasDragged) return;
       e.stopPropagation();
-      openLoveModal();
+      showOrbitPopup(`images/${i}.jpg`, true);
     });
     
     system.appendChild(frame);
@@ -1465,6 +1513,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $(".lang-switch").addEventListener("click", switchLang);
   initProtection();
   initMusic();
+  initOrbitPopup();
 });
 
 // ─── BIRTHDAY COUNTDOWN TIMER ───
