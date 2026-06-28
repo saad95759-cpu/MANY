@@ -250,7 +250,7 @@ function switchLang() {
   // Date Auth Title update (if container visible)
   const dateAuthTitle = $("#date-auth-container .love-question-title");
   if (dateAuthTitle) {
-    dateAuthTitle.textContent = currentLang === "ar" ? "افتكري تاريخ ميلادي الاصلي 🤔" : "Remember my real birthday 🤔";
+    dateAuthTitle.textContent = currentLang === "ar" ? "تفتكري إيه أحلى تاريخ في حياتي؟ 🤔" : "What is the most beautiful date in my life? 🤔";
   }
 
   const authPwdTitle = $("#auth-pwd-title");
