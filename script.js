@@ -125,16 +125,11 @@ function initOverlay() {
   const authDayInput = $("#auth-day");
   const authMonthInput = $("#auth-month");
   const authYearInput = $("#auth-year");
+  const authDay2Input = $("#auth-day-2");
+  const authMonth2Input = $("#auth-month-2");
+  const authYear2Input = $("#auth-year-2");
   const authSubmit = $("#auth-submit-btn");
   const authError = $("#auth-error-msg");
-
-  // Initialize input value to today's date dynamically
-  if (authDayInput && authMonthInput && authYearInput) {
-    const today = new Date();
-    authDayInput.value = String(today.getDate()).padStart(2, '0');
-    authMonthInput.value = String(today.getMonth() + 1).padStart(2, '0');
-    authYearInput.value = String(today.getFullYear());
-  }
 
   // Auto-focus progression helper
   function setupAutoFocus(currentEl, nextEl) {
@@ -151,10 +146,13 @@ function initOverlay() {
 
   setupAutoFocus(authDayInput, authMonthInput);
   setupAutoFocus(authMonthInput, authYearInput);
+  setupAutoFocus(authYearInput, authDay2Input);
+  setupAutoFocus(authDay2Input, authMonth2Input);
+  setupAutoFocus(authMonth2Input, authYear2Input);
 
-  if (authYearInput) {
-    authYearInput.addEventListener("input", () => {
-      authYearInput.value = authYearInput.value.replace(/\D/g, '');
+  if (authYear2Input) {
+    authYear2Input.addEventListener("input", () => {
+      authYear2Input.value = authYear2Input.value.replace(/\D/g, '');
     });
   }
   
@@ -168,8 +166,11 @@ function initOverlay() {
     const day = parseInt(authDayInput.value, 10);
     const month = parseInt(authMonthInput.value, 10);
     const year = parseInt(authYearInput.value, 10);
+    const day2 = parseInt(authDay2Input.value, 10);
+    const month2 = parseInt(authMonth2Input.value, 10);
+    const year2 = parseInt(authYear2Input.value, 10);
 
-    if (day === 1 && month === 8 && year === 2000) {
+    if (day === 1 && month === 7 && year === 1999 && day2 === 27 && month2 === 7 && year2 === 2000) {
       authError.style.color = "#00ffcc";
       authError.textContent = "صح يا عمري! 🎉💖";
       authSubmit.style.pointerEvents = "none";
@@ -252,6 +253,11 @@ function switchLang() {
     dateAuthTitle.textContent = currentLang === "ar" ? "افتكري تاريخ ميلادي الاصلي 🤔" : "Remember my real birthday 🤔";
   }
 
+  const authPwdTitle = $("#auth-pwd-title");
+  if (authPwdTitle) {
+    authPwdTitle.textContent = currentLang === "ar" ? "اي تاريخ ميلادي الاصلي يولا ؟" : "What is my real birthday, kiddo? 😜";
+  }
+
   // Timer label updates
   const timerTitle = $(".timer-title");
   if (timerTitle) timerTitle.textContent = t.timerTitle;
@@ -264,6 +270,11 @@ function switchLang() {
   if (minsLbl) minsLbl.textContent = t.minutesLabel;
   const secsLbl = $("#cosmic-timer .timer-unit:nth-child(7) .timer-label");
   if (secsLbl) secsLbl.textContent = t.secondsLabel;
+
+  const timerContinueBtn = $("#timer-continue-btn");
+  if (timerContinueBtn) {
+    timerContinueBtn.textContent = currentLang === "ar" ? "اكمل 🤍" : "Continue 🤍";
+  }
   
   // Timeline items update
   $("#tl-date-birth").textContent = t.tlBirthDate;
@@ -1499,6 +1510,16 @@ function initBirthdayTimer() {
   update();
   if (targetDate - new Date() > 0) {
     timerInterval = setInterval(update, 1000);
+  }
+
+  // Continue button click handler
+  const timerContinueBtn = $("#timer-continue-btn");
+  if (timerContinueBtn) {
+    timerContinueBtn.addEventListener("click", () => {
+      overlay.classList.add("hidden");
+      $(".main-content").classList.add("visible");
+      startExperience();
+    });
   }
 
   // Hidden bypass: tap timer title 5 times to force unlock gift button

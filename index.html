@@ -32,6 +32,26 @@
             <input type="text" id="auth-year" placeholder="YYYY" maxlength="4" pattern="\d*">
           </div>
         </div>
+
+        <!-- Second Password Prompt -->
+        <h3 class="love-question-subtitle" id="auth-pwd-title" style="font-family: 'Noto Kufi Arabic', sans-serif; font-size: 1.1rem; color: var(--soft-white); margin: 20px 0 10px 0; text-shadow: 0 0 10px var(--neon-pink);">اي تاريخ ميلادي الاصلي يولا ؟</h3>
+        <div class="date-input-wrapper manual-date-inputs">
+          <div class="date-input-field">
+            <label for="auth-day-2">اليوم</label>
+            <input type="text" id="auth-day-2" placeholder="DD" maxlength="2" pattern="\d*">
+          </div>
+          <span class="date-separator">/</span>
+          <div class="date-input-field">
+            <label for="auth-month-2">الشهر</label>
+            <input type="text" id="auth-month-2" placeholder="MM" maxlength="2" pattern="\d*">
+          </div>
+          <span class="date-separator">/</span>
+          <div class="date-input-field">
+            <label for="auth-year-2">السنة</label>
+            <input type="text" id="auth-year-2" placeholder="YYYY" maxlength="4" pattern="\d*">
+          </div>
+        </div>
+
         <button class="love-choice-btn" id="auth-submit-btn">تأكيد 🤍</button>
         <p class="love-feedback-msg" id="auth-error-msg"></p>
       </div>
@@ -71,6 +91,7 @@
               <span class="timer-label">ثواني</span>
             </div>
           </div>
+          <button class="love-choice-btn" id="timer-continue-btn" style="margin-top: 20px; display: inline-block;">اكمل 🤍</button>
         </div>
         <div id="birthday-special-msg" style="display: none;">
           <p class="special-text">أجمل يوم في العمر يوم بتمنى يتكرر وأنتِ في حضني السنة الجاية ❤️</p>
