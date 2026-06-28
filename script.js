@@ -255,7 +255,7 @@ function switchLang() {
 
   const authPwdTitle = $("#auth-pwd-title");
   if (authPwdTitle) {
-    authPwdTitle.textContent = currentLang === "ar" ? "اي تاريخ ميلادي الاصلي يولا ؟" : "What is my real birthday, kiddo? 😜";
+    authPwdTitle.textContent = currentLang === "ar" ? "افتكري تاريخ ميلادي الاصلي 🤔" : "Remember my real birthday 🤔";
   }
 
   // Timer label updates
@@ -1156,9 +1156,10 @@ function initLightbox() {
 
 // ─── HEART CLICK ───
 function initHeartClick() {
-  const container = $(".fixed-heart-container");
-  if (!container) return;
-  container.addEventListener("click", (e) => {
+  const heartEl = $(".main-heart");
+  if (!heartEl) return;
+  heartEl.addEventListener("click", (e) => {
+    const container = $(".fixed-heart-container");
     const rect = container.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;

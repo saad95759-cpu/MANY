@@ -160,6 +160,14 @@ body[dir="rtl"] {
   width: 95px;
 }
 
+#auth-day-2, #auth-month-2 {
+  width: 60px;
+}
+
+#auth-year-2 {
+  width: 95px;
+}
+
 .date-input-field input:focus {
   border-color: var(--neon-pink);
   box-shadow: 0 0 15px rgba(255, 45, 138, 0.4), inset 0 0 10px rgba(0,0,0,0.5);
@@ -176,6 +184,24 @@ body[dir="rtl"] {
 #auth-submit-btn {
   background: linear-gradient(135deg, var(--cosmic-purple), var(--neon-pink));
   box-shadow: 0 0 15px rgba(123, 47, 190, 0.4);
+}
+
+.auth-divider {
+  width: 60%;
+  height: 1px;
+  margin: 8px auto 18px auto;
+  background: linear-gradient(90deg, transparent, rgba(255, 45, 138, 0.4), var(--gold), rgba(255, 45, 138, 0.4), transparent);
+  border: none;
+}
+
+.love-question-subtitle {
+  font-family: 'Noto Kufi Arabic', sans-serif;
+  font-size: 1.05rem;
+  color: var(--soft-white);
+  margin: 0 0 14px 0;
+  text-shadow: 0 0 10px var(--neon-pink);
+  text-align: center;
+  font-weight: 600;
 }
 
 #auth-submit-btn:hover {
@@ -366,31 +392,126 @@ body[dir="rtl"] {
 }
 
 .main-heart {
-  font-size: clamp(65px, 15vw, 130px);
+  width: clamp(80px, 18vw, 140px);
+  height: clamp(80px, 18vw, 140px);
   animation: heartbeat 1.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 40px var(--neon-pink)) drop-shadow(0 0 80px rgba(255,45,138,0.8));
   transition: transform 0.2s;
   user-select: none;
   cursor: pointer;
   pointer-events: auto;
   z-index: 10;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 600px;
 }
 .main-heart:active { transform: scale(0.9); }
+
+.heart-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: heartRotate3d 6s ease-in-out infinite;
+}
+
+.heart-shape {
+  position: absolute;
+  inset: 0;
+}
+
+.heart-shape::before,
+.heart-shape::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 80%;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(
+    180deg,
+    #ff6b9d 0%,
+    #ff2d8a 30%,
+    #d4145a 60%,
+    #a00040 100%
+  );
+  box-shadow:
+    inset -6px -6px 18px rgba(0, 0, 0, 0.35),
+    inset 6px 6px 18px rgba(255, 150, 180, 0.4),
+    0 0 40px rgba(255, 45, 138, 0.6),
+    0 0 80px rgba(255, 45, 138, 0.3),
+    0 0 120px rgba(255, 45, 138, 0.15);
+}
+
+.heart-shape::before {
+  left: 50%;
+  transform-origin: 0% 100%;
+  transform: rotate(-45deg);
+}
+
+.heart-shape::after {
+  right: 50%;
+  transform-origin: 100% 100%;
+  transform: rotate(45deg);
+}
+
+/* Glossy highlight on the heart */
+.heart-shine {
+  position: absolute;
+  top: 12%;
+  left: 22%;
+  width: 28%;
+  height: 25%;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.3) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: rotate(-35deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: shineShimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes shineShimmer {
+  0% { opacity: 0.5; transform: rotate(-35deg) scale(0.95); }
+  100% { opacity: 0.9; transform: rotate(-35deg) scale(1.05); }
+}
+
+@keyframes heartRotate3d {
+  0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
+  25% { transform: rotateY(8deg) rotateX(-3deg); }
+  50% { transform: rotateY(0deg) rotateX(0deg); }
+  75% { transform: rotateY(-8deg) rotateX(3deg); }
+}
 
 /* Stop heartbeat on scroll to prevent CPU/GPU rendering lag */
 .fixed-heart-container.scrolled .main-heart {
   animation: none !important;
 }
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 40px var(--neon-pink)) drop-shadow(0 0 80px rgba(255,45,138,0.8)); }
-  15% { transform: scale(1.15); filter: drop-shadow(0 0 60px var(--neon-pink)) drop-shadow(0 0 100px rgba(255,45,138,1)); }
-  30% { transform: scale(1); }
-  45% { transform: scale(1.1); }
+.fixed-heart-container.scrolled .heart-3d {
+  animation: none !important;
 }
 
-/* Glow Ring around fixed heart - perfectly aligned by sharing the square container's coordinate context */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 30px rgba(255,45,138,0.5)) drop-shadow(0 0 60px rgba(255,45,138,0.3));
+  }
+  15% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 50px rgba(255,45,138,0.8)) drop-shadow(0 0 100px rgba(255,45,138,0.5));
+  }
+  30% { transform: scale(1); }
+  45% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 45px rgba(255,45,138,0.7)) drop-shadow(0 0 90px rgba(255,45,138,0.4));
+  }
+}
+
+/* Glow Ring around fixed heart */
 .glow-ring {
   position: absolute;
   top: 0;
@@ -440,6 +561,11 @@ body[dir="rtl"] {
   pointer-events: auto;
   user-select: none;
   text-align: center;
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+.orbit-item:hover {
+  text-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--cosmic-purple), 0 0 45px rgba(255,45,138,0.3);
 }
 
 /* Orbit Photo Frames */
@@ -452,10 +578,20 @@ body[dir="rtl"] {
   border: 3.5px solid var(--neon-pink);
   box-shadow: 0 0 25px var(--neon-pink-glow), 0 0 10px rgba(0,0,0,0.5);
   pointer-events: auto;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+.orbit-photo:hover {
+  box-shadow: 0 0 35px var(--neon-pink-glow), 0 0 20px rgba(255,45,138,0.4), 0 0 60px rgba(123,47,190,0.2);
+  border-color: var(--gold);
 }
 
 .orbit-photo img {
   width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.orbit-photo:hover img {
+  transform: scale(1.08);
 }
 
 .hero-title {
@@ -588,6 +724,12 @@ body[dir="rtl"] {
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: 0 0 40px rgba(123,47,190,0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.counter-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 60px rgba(255,45,138,0.2), 0 8px 32px rgba(0,0,0,0.3);
+  border-color: rgba(255,45,138,0.25);
 }
 
 .counter-number {
@@ -663,11 +805,12 @@ body[dir="rtl"] {
   border-radius: 16px;
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  transition: all 0.4s;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .timeline-card:hover {
   border-color: rgba(255,45,138,0.3);
-  box-shadow: 0 0 30px rgba(255,45,138,0.1);
+  box-shadow: 0 0 30px rgba(255,45,138,0.1), 0 6px 24px rgba(0,0,0,0.2);
+  transform: translateX(6px);
 }
 
 .timeline-date {
